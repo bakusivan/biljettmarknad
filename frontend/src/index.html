@@ -229,6 +229,8 @@
 
                 // Check if there are results
                 if (results.length > 0) {
+                    // Sort results by price in ascending order
+                    results.sort((a, b) => a.price - b.price);
                     displayResults(results);
                 } else {
                     document.getElementById("searchResults").innerHTML = "<p>No tickets found.</p>";
