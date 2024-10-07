@@ -16,6 +16,7 @@ router.post('/tickets', async (req, res) => {
 
 // Get all tickets with a specific service provider
 router.get('/tickets', async (req, res) => {
+  console.log("Received request to get tickets:", req.body);
   try {
     const tickets = await Ticket.find({ serviceProvider: req.query.serviceProvider });
     res.send(tickets);

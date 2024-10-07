@@ -5,8 +5,8 @@
 TOPLEVEL="$(git rev-parse --show-toplevel)"
 
 # containers
-docker stop backend frontend ticket-db user-db
-docker rm backend frontend ticket-db user-db
+docker stop backend frontend ticket-db
+docker rm backend frontend ticket-db
 
 # images
 docker rmi backend-image:latest

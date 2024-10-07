@@ -74,7 +74,7 @@ NOTE: use env/ files for local testing.
 
   -- do the same when searching for available tickets [done]
 
-- docker-compose
+- docker-compose [done][untested]
 
   -- because running in k8s is expensive
 
