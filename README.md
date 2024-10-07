@@ -1,22 +1,11 @@
-Biljettmarknad
+# Biljettmarknad
 
-Overview
+## Overview
 
 Biljettmarknad is a web application that allows users to post and search for tickets. This project includes both frontend and backend components with a clear API for ticket posting and search functionalities.
 
-Project Structure
+## Description of Key Files
 
-.
-|-- frontend/
-|   |-- src/
-|       |-- index.html
-|       |-- script.js
-|-- backend/
-|   |-- src/
-|       |-- routes/
-|       |-- models/
-
-Description of Key Files
 1. Frontend (UI)
 
     index.html: The main HTML file, containing the structure of the web application. It features:
@@ -40,7 +29,8 @@ Description of Key Files
     models/: Contains the data model for tickets.
         Ticket Schema: Defines the structure of a ticket object, including fields such as userName, serviceProvider, zone, price, paymentMethod, and contact.
 
-Explanation of Key Components
+## Explanation of Key Components
+
 Frontend:
 
     Form Handling:
@@ -66,13 +56,15 @@ Backend:
             paymentMethod
             contact
 
-How to Run the Project
+## How to Run the Project
 
     Frontend: Open index.html in a web browser. It provides the user interface to interact with the ticket posting and search functionalities.
     Backend: The backend is a Node.js Express application. To run:
         Navigate to the backend directory.
         Run npm install to install dependencies.
         Run npm start to launch the backend API.
+
+NOTE: use env/ files for local testing.
 
 
 ## TODO
@@ -88,8 +80,6 @@ How to Run the Project
 
 - make search more user friendly instead of just dumping entries from DB
 
-
-
-
+---------------------------------------------------------------------------------
 before public:
   - remove /// artifactory registry
