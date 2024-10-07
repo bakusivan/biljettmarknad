@@ -82,6 +82,24 @@
             padding: 10px;
             border-radius: 5px;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+        }
+        th:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -89,7 +107,7 @@
 
     <section>
         <h2>Post a Ticket</h2>
-        <form id="ticketForm">
+        <form id="ticketForm" onsubmit="postTicket(event)">
             <div>
                 <label for="userName">User Name:</label>
                 <input type="text" id="userName" placeholder="Enter your user name" required>
@@ -99,6 +117,8 @@
                 <select id="serviceProvider" required>
                     <option value="">Select Service Provider</option>
                     <option value="Provider1">Provider1</option>
+                    <option value="Provider2">Provider2</option>
+                    <option value="Provider3">Provider3</option>
                 </select>
             </div>
             <div>
@@ -106,8 +126,8 @@
                 <select id="zone" required>
                     <option value="">Select zone Provider</option>
                     <option value="A">A</option>
-                    <option value="A">AB</option>
-                    <option value="A">ABC</option>
+                    <option value="AB">AB</option>
+                    <option value="ABC">ABC</option>
                 </select>
             </div>
             <div>
@@ -133,14 +153,149 @@
         <h2>Search Tickets</h2>
         <div>
             <label for="searchProvider">Service Provider:</label>
-            <select id="searchProvider">
+            <select id="searchProvider" required>
+                <option value="">Select Service Provider</option>
                 <option value="Provider1">Provider1</option>
+                <option value="Provider2">Provider2</option>
+                <option value="Provider3">Provider3</option>
             </select>
-            <button onclick="searchTickets()">Search Tickets</button>
         </div>
-        <div id="searchResults"></div>
+        <div>
+            <label for="searchZone">Zone:</label>
+            <select id="searchZone" required>
+                <option value="">Select Zone</option>
+                <option value="A">A</option>
+                <option value="AB">AB</option>
+                <option value="ABC">ABC</option>
+            </select>
+        </div>
+        <button onclick="searchTickets()">Search Tickets</button>
+        <div id="searchResults">
+            <!-- Table will be generated here -->
+        </div>
     </section>
 
-    <script src="script.js"></script>
+    <script>
+        // Function to post a new ticket
+        async function postTicket(event) {
+            event.preventDefault(); // Prevent the form from submitting the default way
+
+            const ticketData = {
+                userName: document.getElementById("userName").value,
+                serviceProvider: document.getElementById("serviceProvider").value,
+                zone: document.getElementById("zone").value,
+                price: parseFloat(document.getElementById("price").value),
+                payment: document.getElementById("payment").value,
+                contact: document.getElementById("contact").value
+            };
+
+            try {
+                const response = await fetch('/api/tickets', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(ticketData)
+                });
+
+                if (response.ok) {
+                    alert("Ticket posted successfully!");
+                    document.getElementById("ticketForm").reset(); // Reset form fields
+                } else {
+                    const errorData = await response.json();
+                    alert(`Failed to post ticket: ${errorData.message || response.statusText}`);
+                }
+            } catch (error) {
+                console.error('Error posting ticket:', error);
+                alert('Error posting ticket. Please try again.');
+            }
+        }
+
+        // Function to search and display tickets
+        async function searchTickets() {
+            const searchProvider = document.getElementById("searchProvider").value;
+            const searchZone = document.getElementById("searchZone").value;
+
+            // Ensure both provider and zone are selected
+            if (!searchProvider || !searchZone) {
+                alert("Please select both a service provider and a zone.");
+                return;
+            }
+
+            try {
+                // Construct the URL with query parameters
+                const response = await fetch(`/api/tickets?serviceProvider=${encodeURIComponent(searchProvider)}&zone=${encodeURIComponent(searchZone)}`);
+                const results = await response.json();
+
+                // Check if there are results
+                if (results.length > 0) {
+                    displayResults(results);
+                } else {
+                    document.getElementById("searchResults").innerHTML = "<p>No tickets found.</p>";
+                }
+            } catch (error) {
+                console.error('Error fetching tickets:', error);
+                document.getElementById("searchResults").innerHTML = "<p>Error fetching tickets.</p>";
+            }
+        }
+
+        // Function to display results in a sortable table
+        function displayResults(tickets) {
+            let tableHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable(0)">Zone</th>
+                            <th onclick="sortTable(1)">Price</th>
+                            <th>User Name</th>
+                            <th>Service Provider</th>
+                            <th>Payment</th>
+                            <th>Contact</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            tickets.forEach(ticket => {
+                tableHTML += `
+                    <tr>
+                        <td>${ticket.zone}</td>
+                        <td>${ticket.price}</td>
+                        <td>${ticket.userName}</td>
+                        <td>${ticket.serviceProvider}</td>
+                        <td>${ticket.payment}</td>
+                        <td>${ticket.contact}</td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += `
+                    </tbody>
+                </table>
+            `;
+
+            document.getElementById("searchResults").innerHTML = tableHTML;
+        }
+
+        // Sorting function for the ticket table
+        function sortTable(columnIndex) {
+            const table = document.querySelector("#searchResults table");
+            const tbody = table.querySelector("tbody");
+            const rows = Array.from(tbody.querySelectorAll("tr"));
+
+            const isAscending = table.dataset.sortOrder === "asc";
+            table.dataset.sortOrder = isAscending ? "desc" : "asc";
+
+            rows.sort((a, b) => {
+                const aText = a.children[columnIndex].innerText;
+                const bText = b.children[columnIndex].innerText;
+
+                return isAscending ? aText.localeCompare(bText) : bText.localeCompare(aText);
+            });
+
+            tbody.innerHTML = "";
+            rows.forEach(row => tbody.appendChild(row));
+        }
+    </script>
 </body>
 </html>

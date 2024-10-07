@@ -14,14 +14,21 @@ router.post('/tickets', async (req, res) => {
   }
 });
 
-// Get all tickets with a specific service provider
+// Get all tickets with a specific service provider and zone
 router.get('/tickets', async (req, res) => {
-  console.log("Received request to get tickets:", req.body);
+  console.log("Received request to get tickets:", req.query); // Log incoming query parameters
   try {
-    const tickets = await Ticket.find({ serviceProvider: req.query.serviceProvider });
-    res.send(tickets);
+      const { serviceProvider, zone } = req.query; // Destructure serviceProvider and zone
+      const query = {};
+      
+      // Only add to the query if they are provided
+      if (serviceProvider) query.serviceProvider = serviceProvider;
+      if (zone) query.zone = zone;
+      
+      const tickets = await Ticket.find(query); // Query the database
+      res.send(tickets);
   } catch (error) {
-    res.status(500).send(error);
+      res.status(500).send(error);
   }
 });
 
