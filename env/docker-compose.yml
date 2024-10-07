@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  # MongoDB Service
+  mongo:
+    image: armdocker.rnd.ericsson.se/dockerhub-ericsson-remote/mongo:latest
+    container_name: ticket-db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    ports:
+      - "27017:27017"
+    networks:
+      - bidel
+
+  # Backend Service
+  backend:
+    build:
+      context: ../backend
+      dockerfile: containerfile
+    image: localhost/backend-image:latest
+    container_name: backend
+    ports:
+      - "3000:3000"
+    networks:
+      - bidel
+    depends_on:
+      - mongo
+
+  # Frontend Service
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: containerfile
+    image: localhost/frontend-image:latest
+    container_name: frontend
+    ports:
+      - "8080:80"
+    networks:
+      - bidel
+
+networks:
+  bidel:
+    driver: bridge
