@@ -1,0 +1,24 @@
+# Stage 1: Build stage (Optional, if you have a build step with npm or other tools)
+# If you have a frontend build process (e.g., using React, Vue, etc.), 
+# you can add a build stage like this:
+# 
+# FROM node:18-alpine as build
+# WORKDIR /app
+# COPY . .
+# RUN npm install && npm run build
+
+# Stage 2: Serve frontend with Nginx
+FROM armdocker.rnd.ericsson.se/dockerhub-ericsson-remote/nginx:alpine
+
+# Copy the Nginx configuration file (Optional: customize it if needed)
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY default.conf /etc/nginx/conf.d/default.conf
+
+# Copy the frontend static files to Nginx's default static folder
+COPY src/ /usr/share/nginx/html
+
+# Expose the default Nginx port
+EXPOSE 80
+
+# Start Nginx when the container starts
+CMD ["nginx", "-g", "daemon off;"]

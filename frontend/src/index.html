@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biljettmarknad</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            padding: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        section {
+            background: #fff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+        }
+        form div {
+            margin-bottom: 15px;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+        input, select, button {
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+        input:focus, select:focus {
+            border-color: #007BFF;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        /* Responsive improvements */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            form, section {
+                padding: 15px;
+            }
+        }
+        /* Additional styling for search results */
+        #searchResults {
+            margin-top: 20px;
+        }
+        #searchResults p {
+            background-color: #eef;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Biljettmarknad</h1>
+
+    <section>
+        <h2>Post a Ticket</h2>
+        <form id="ticketForm">
+            <div>
+                <label for="userName">User Name:</label>
+                <input type="text" id="userName" placeholder="Enter your user name" required>
+            </div>
+            <div>
+                <label for="serviceProvider">Service Provider:</label>
+                <select id="serviceProvider" required>
+                    <option value="">Select Service Provider</option>
+                    <option value="Provider1">Provider1</option>
+                </select>
+            </div>
+            <div>
+                <label for="zone">Zone:</label>
+                <select id="zone" required>
+                    <option value="">Select zone Provider</option>
+                    <option value="A">A</option>
+                    <option value="A">AB</option>
+                    <option value="A">ABC</option>
+                </select>
+            </div>
+            <div>
+                <label for="price">Price:</label>
+                <input type="number" id="price" placeholder="Enter the price" required>
+            </div>
+            <div>
+                <label for="payment">Payment:</label>
+                <select id="payment" required>
+                    <option value="">Select payment method</option>
+                    <option value="Swish">Swish</option>
+                </select>
+            </div>
+            <div>
+                <label for="contact">Contact:</label>
+                <input type="text" id="contact" placeholder="Contact (Mobile or Email)" required>
+            </div>
+            <button type="submit">Post Ticket</button>
+        </form>
+    </section>
+    
+    <section>
+        <h2>Search Tickets</h2>
+        <div>
+            <label for="searchProvider">Service Provider:</label>
+            <select id="searchProvider">
+                <option value="Provider1">Provider1</option>
+            </select>
+            <button onclick="searchTickets()">Search Tickets</button>
+        </div>
+        <div id="searchResults"></div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>

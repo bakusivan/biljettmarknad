@@ -1,0 +1,21 @@
+# Use the official Node.js image with Alpine
+FROM armdocker.rnd.ericsson.se/dockerhub-ericsson-remote/node:18-alpine
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy only the package.json and package-lock.json first
+# This ensures npm install is only run when dependencies change
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the remaining app source code (but node_modules will be excluded by .dockerignore)
+COPY . .
+
+# Expose the application port
+EXPOSE 3000
+
+# Define the command to start the application
+CMD ["npm", "start"]
