@@ -78,7 +78,15 @@ NOTE: use env/ files for local testing.
 
   -- because running in k8s is expensive
 
-- make search more user friendly instead of just dumping entries from DB
+- make search more user friendly instead of just dumping entries from DB [done]
+
+- 
+
+----
+
+- auth?
+
+- domain?
 
 ---------------------------------------------------------------------------------
 before public:
