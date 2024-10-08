@@ -80,13 +80,13 @@ NOTE: use env/ files for local testing.
 
 - make search more user friendly instead of just dumping entries from DB [done]
 
-- 
-
 ----
 
-- auth?
+- make MetaMask auth possible []
 
-- domain?
+- auth as login prompt? []
+
+- book domain for this []
 
 ---------------------------------------------------------------------------------
 before public:
