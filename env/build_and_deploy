@@ -9,7 +9,7 @@ docker network create bidel
 
 # backend
 docker build -t backend-image:latest -f "${TOPLEVEL}"/backend/containerfile "${TOPLEVEL}"/backend
-docker run --name ticket-db -d -p 27017:27017 --network bidel -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password armdocker.rnd.ericsson.se/dockerhub-ericsson-remote/mongo:latest
+docker run --name ticket-db -d -p 27017:27017 --network bidel -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password mongo:latest
 docker run -dit -p 3000:3000 --network bidel --name backend backend-image:latest
 
 # frontend
