@@ -91,3 +91,4 @@ NOTE: use env/ files for local testing.
 ---------------------------------------------------------------------------------
 before public:
   - remove /// artifactory registry
+  - harden mongo and do not use root:password
