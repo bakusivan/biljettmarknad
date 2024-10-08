@@ -3,7 +3,7 @@ version: '3.8'
 services:
   # MongoDB Service
   mongo:
-    image: armdocker.rnd.ericsson.se/dockerhub-ericsson-remote/mongo:latest
+    image: mongo:latest
     container_name: ticket-db
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
